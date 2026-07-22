@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito - Comidas Típicas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="catalog-page">
+    <header class="navbar">
+      <div class="navbar-content">
+        <div class="navbar-brand">
+          <div class="brand-logo">
+            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="22" r="8" fill="white"/>
+              <path d="M 18 28 L 22 35 L 38 35 L 42 28 Z" fill="white"/>
+              <rect x="16" y="35" width="28" height="3" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Comidas Típicas</h2>
+            <p>CATÁLOGO GLOBAL</p>
+          </div>
+        </div>
+
+        <div class="navbar-actions" style="margin-left: auto;">
+          <a href="carrito.html" class="cart-btn">🛒</a>
+          <button class="logout-btn" onclick="location.href='index.html'">Salir</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="cart-page">
+      <div class="cart-header">
+        <h1>Tu Pedido</h1>
+      </div>
+
+      <div id="cartContainer" class="cart-container">
+        <div class="empty-cart">
+          <div class="empty-cart-content">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>Tu carrito está vacío</h2>
+            <p>Parece que aún no has decidido qué delicias quieres probar.</p>
+            <p>¡Vuelve al catálogo y explora nuestros platillos!</p>
+            <a href="menu.html" class="btn-explore">Explorar el Menú</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const dishes = {
+        'Tacos al Pastor': { price: 12.99, image: '' },
+        'Pizza Napolitana': { price: 15.99, image: '' },
+        'Sushi Premium': { price: 18.99, image: '' }
+      };
+
+      function cargarCarrito() {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        let contenedor = document.getElementById('cartContainer');
+        if (carrito.length === 0) {
+          contenedor.innerHTML = `
+            <div class="empty-cart">
+              <div class="empty-cart-content">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>Tu carrito está vacío</h2>
+                <p>Parece que aún no has decidido qué delicias quieres probar.</p>
+                <p>¡Vuelve al catálogo y explora nuestros platillos!</p>
+                <a href="menu.html" class="btn-explore">Explorar el Menú</a>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        // Agrupar items por nombre
+        let carritoAgrupado = {};
+        carrito.forEach(item => {
+          if (!carritoAgrupado[item.nombre]) {
+            carritoAgrupado[item.nombre] = { ...item, cantidad: 1 };
+          } else {
+            carritoAgrupado[item.nombre].cantidad++;
+          }
+        });
+        
+        let items = '';
+        let subtotal = 0;
+        
+        Object.values(carritoAgrupado).forEach((item) => {
+          let itemTotal = item.precio * item.cantidad;
+          subtotal += itemTotal;
+          const emoji = dishes[item.nombre]?.image || '';
+          
+          items += `
+            <div class="cart-item">
+              <div class="item-image">${emoji}</div>
+              <div class="item-details">
+                <h3>${item.nombre}</h3>
+                <p class="item-origin"> ${item.nombre.includes('Taco') ? 'México' : item.nombre.includes('Pizza') ? 'Italia' : 'Japón'}</p>
+                <p class="item-description">Tradicionales ${item.nombre.toLowerCase()} con ingredientes auténticos.</p>
+                <div class="item-controls">
+                  <button onclick="cambiarCantidad('${item.nombre}', -1)">−</button>
+                  <input type="number" value="${item.cantidad}" readonly />
+                  <button onclick="cambiarCantidad('${item.nombre}', 1)">+</button>
+                </div>
+              </div>
+              <div class="item-price">\$${item.precio.toFixed(2)}</div>
+              <button class="btn-delete" onclick="eliminarDelCarrito('${item.nombre}')">🗑</button>
+            </div>
+          `;
+        });
+        
+        const impuestos = subtotal * 0.1;
+        const envio = 0;
+        const total = subtotal + impuestos + envio;
+        
+        contenedor.innerHTML = `
+          <div class="cart-wrapper">
+            <div class="cart-items-section">
+              ${items}
+            </div>
+            <div class="cart-summary-section">
+              <div class="summary-card">
+                <h2>Resumen del Pedido</h2>
+                <div class="summary-row">
+                  <span>Subtotal (${carrito.length} items)</span>
+                  <span>\$${subtotal.toFixed(2)}</span>
+                </div>
+                <div class="summary-row">
+                  <span>Impuestos y tarifas</span>
+                  <span>\$${impuestos.toFixed(2)}</span>
+                </div>
+                <div class="summary-row">
+                  <span>Envío</span>
+                  <span class="free">¡Gratis!</span>
+                </div>
+                <div class="summary-row total">
+                  <span>Total</span>
+                  <span>\$${total.toFixed(2)}</span>
+                </div>
+                <button class="btn-checkout" onclick="procesarPago()">Proceder al pago 💳</button>
+                <p class="guarantee">⭐ Satisfacción garantizada</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      function cambiarCantidad(nombre, cantidad) {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        let index = carrito.findIndex(item => item.nombre === nombre);
+        
+        if (index !== -1) {
+          if (cantidad > 0) {
+            carrito.push({ nombre, precio: carrito[index].precio, id: Date.now() });
+          } else if (cantidad < 0 && carrito.filter(item => item.nombre === nombre).length > 1) {
+            carrito.splice(index, 1);
+          }
+          localStorage.setItem('carrito', JSON.stringify(carrito));
+          cargarCarrito();
+        }
+      }
+      
+      function eliminarDelCarrito(nombre) {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carrito = carrito.filter(item => item.nombre !== nombre);
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        cargarCarrito();
+      }
+      function procesarPago() {
+        alert(' Tu pago fue exitoso! Gracias por tu compra. Tu pedido ha sido confirmado.');
+        localStorage.setItem('carrito', JSON.stringify([]));
+        cargarCarrito();
+      }
+      cargarCarrito();
+    </script>
+  </body>
+</html>

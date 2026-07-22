@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú - Comidas Típicas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="catalog-page">
+    <header class="navbar">
+      <div class="navbar-content">
+        <div class="navbar-brand">
+          <div class="brand-logo">
+            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="22" r="8" fill="white"/>
+              <path d="M 18 28 L 22 35 L 38 35 L 42 28 Z" fill="white"/>
+              <rect x="16" y="35" width="28" height="3" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Comidas Típicas</h2>
+            <p>CATÁLOGO GLOBAL</p>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <input type="text" placeholder="Buscar tacos, sushi, pizza..." />
+        </div>
+
+        <div class="navbar-actions">
+          <a href="carrito.html" class="cart-btn">🛒</a>
+          <button class="logout-btn" onclick="location.href='index.html'">Salir</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">VIAJE CULINARIO</span>
+        <p id="supabase-status" style="margin-top: 12px; font-weight: 600; color: #fff; opacity: 0.95;">Conectando con Supabase...</p>
+        <h1>Un viaje de sabores por todo el mundo</h1>
+        <p>Descubre nuestra selección de platillos icónicos de diferentes culturas, preparados con las recetas tradicionales de cada país.</p>
+      </div>
+    </section>
+
+    <main class="catalog">
+      <h2 class="catalog-title">Nuestro Catálogo</h2>
+
+      <div class="dishes-grid">
+        <article class="dish-card">
+          <div class="dish-image" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect fill='%235b9bd5' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23fff' font-size='24' font-family='sans-serif'%3EMéxico%3C/text%3E%3C/svg%3E" alt="México" />
+          </div>
+          <div class="dish-info">
+            <div class="dish-header">
+              <span class="dish-location">guatemala</span>
+              <span class="dish-rating"> 4.9</span>
+            </div>
+            <h3>chucitos</h3>
+            <p>chuchitos hechos por personas .</p>
+            <div class="dish-footer">
+              <span class="dish-price">$12.99</span>
+              <button class="btn-add-cart" onclick="agregarAlCarrito('Tacos al Pastor', 12.99)">Agregar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish-card">
+          <div class="dish-image" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect fill='%23ff9a4d' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23fff' font-size='24' font-family='sans-serif'%3EItalia%3C/text%3E%3C/svg%3E" alt="Italia" />
+          </div>
+          <div class="dish-info">
+            <div class="dish-header">
+              <span class="dish-location">Italia</span>
+              <span class="dish-rating">4.8</span>
+            </div>
+            <h3>Pizza napolitana</h3>
+            <p>Horno de leña y masa madre fermentada 24 horas.</p>
+            <div class="dish-footer">
+              <span class="dish-price">$15.99</span>
+              <button class="btn-add-cart" onclick="agregarAlCarrito('Pizza Napolitana', 15.99)">Agregar</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish-card">
+          <div class="dish-image" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect fill='%233d3d5c' width='300' height='200'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23fff' font-size='24' font-family='sans-serif'%3EJapón%3C/text%3E%3C/svg%3E" alt="Japón" />
+          </div>
+          <div class="dish-info">
+            <div class="dish-header">
+              <span class="dish-location">Japón</span>
+              <span class="dish-rating"> 4.7</span>
+            </div>
+            <h3>Sushi desde japon oficial</h3>
+            <p>Arroz sushi y pescado fresco de primera calidad.</p>
+            <div class="dish-footer">
+              <span class="dish-price">$16.40</span>
+              <button class="btn-add-cart" onclick="agregarAlCarrito('Sushi Premium', 18.99)">Agregar</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script>
+      function agregarAlCarrito(nombre, precio) {
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        carrito.push({ nombre, precio, id: Date.now() });
+        localStorage.setItem('carrito', JSON.stringify(carrito));
+        alert(nombre + ' agregado al carrito!');
+      }
+    </script>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="22" r="8" fill="white"/>
+              <path d="M 18 28 L 22 35 L 38 35 L 42 28 Z" fill="white"/>
+              <rect x="16" y="35" width="28" height="3" fill="white"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Comidas Típicas</h3>
+            <p>El mundo para quew comas en la mesa .</p>
+          </div>
+        </div>
+        <div class="footer-message">
+          <p>gracias por elegir a nustra tienda comidas tipicas creada por gerson  </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
