@@ -143,15 +143,16 @@
       }
 
       function obtenerImagenProducto(nombre) {
-        const mapa = {
-          'Chuchitos': 'img/images.jpg',
-          'Pizza napolitana': 'img/images (1).jpg',
-          'Sushi Premium': 'img/images (2).jpg',
-          'Tacos al Pastor': 'img/5.png',
-          'Goulash Tradicional': 'img/images.jpg'
-        };
+        const productosConImagen = [
+          { nombre: 'Chuchitos', imagen: 'img/Quiche Lorraine.png' },
+          { nombre: 'Pizza napolitana', imagen: 'img/pizza italiana.jpg' },
+          { nombre: 'Sushi Premium', imagen: 'img/sushi.jpg' },
+          { nombre: 'Tacos al Pastor', imagen: 'img/rosti.jpg' },
+          { nombre: 'Goulash Tradicional', imagen: 'img/Quiche Lorraine.png' }
+        ];
 
-        return mapa[nombre] || 'img/images.jpg';
+        const producto = productosConImagen.find(item => item.nombre === nombre);
+        return producto ? producto.imagen : 'img/Quiche Lorraine.png';
       }
 
       function agregarAlCarrito(producto_id, nombre, precio) {
