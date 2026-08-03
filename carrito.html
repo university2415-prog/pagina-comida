@@ -53,10 +53,16 @@
 
     <script>
       const dishes = {
-        'Tacos al Pastor': { price: 12.99, image: '' },
-        'Pizza Napolitana': { price: 15.99, image: '' },
-        'Sushi Premium': { price: 18.99, image: '' }
+        'Tacos al Pastor': { price: 12.99, image: 'img/5.png' },
+        'Pizza napolitana': { price: 15.99, image: 'img/images (1).jpg' },
+        'Sushi Premium': { price: 18.99, image: 'img/images (2).jpg' },
+        'Chuchitos': { price: 12.99, image: 'img/images.jpg' },
+        'Goulash Tradicional': { price: 14.50, image: 'img/images.jpg' }
       };
+
+      function obtenerImagenProducto(nombre) {
+        return dishes[nombre]?.image || 'img/images.jpg';
+      }
 
       function cargarCarrito() {
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
@@ -92,11 +98,13 @@
         Object.values(carritoAgrupado).forEach((item) => {
           let itemTotal = item.precio * item.cantidad;
           subtotal += itemTotal;
-          const emoji = dishes[item.nombre]?.image || '';
+          const imagen = obtenerImagenProducto(item.nombre);
           
           items += `
             <div class="cart-item">
-              <div class="item-image">${emoji}</div>
+              <div class="item-image">
+                <img src="${imagen}" alt="${item.nombre}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;">
+              </div>
               <div class="item-details">
                 <h3>${item.nombre}</h3>
                 <p class="item-origin"> ${item.nombre.includes('Taco') ? 'México' : item.nombre.includes('Pizza') ? 'Italia' : 'Japón'}</p>

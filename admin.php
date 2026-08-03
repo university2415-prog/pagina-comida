@@ -6,6 +6,11 @@ require_once 'conexion.php';
 
 $mensaje = "";
 
+$checkCol = $conn->query("SHOW COLUMNS FROM productos LIKE 'imagen'");
+if ($checkCol && $checkCol->num_rows === 0) {
+    $conn->query("ALTER TABLE productos ADD COLUMN imagen VARCHAR(255) NULL DEFAULT NULL");
+}
+
 // Procesar nuevo producto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'crear_producto') {
     $nombre = trim($_POST['nombre'] ?? '');
@@ -14,10 +19,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
     $precio = floatval($_POST['precio'] ?? 0);
     $rating = floatval($_POST['rating'] ?? 5.0);
     $stock = intval($_POST['stock'] ?? 10);
+    $imagen_path = null;
+
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK && is_uploaded_file($_FILES['imagen']['tmp_name'])) {
+        $directorio = __DIR__ . '/img/uploads';
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0777, true);
+        }
+
+        $info = pathinfo($_FILES['imagen']['name']);
+        $ext = strtolower($info['extension'] ?? 'jpg');
+        $nombreArchivo = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $info['filename'] ?? 'imagen') . '.' . $ext;
+        $rutaDestino = $directorio . '/' . $nombreArchivo;
+
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+            $imagen_path = 'img/uploads/' . $nombreArchivo;
+        }
+    }
 
     if (!empty($nombre) && $precio > 0) {
-        $stmt = $conn->prepare("INSERT INTO productos (nombre, descripcion, origen, precio, rating, stock) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssddi", $nombre, $descripcion, $origen, $precio, $rating, $stock);
+        $stmt = $conn->prepare("INSERT INTO productos (nombre, descripcion, origen, precio, rating, stock, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssddis", $nombre, $descripcion, $origen, $precio, $rating, $stock, $imagen_path);
         if ($stmt->execute()) {
             $mensaje = "¡Producto '$nombre' agregado exitosamente a la base de datos!";
         } else {
@@ -135,8 +157,8 @@ $pedidos = $conn->query("SELECT p.*, u.nombre as cliente, u.correo FROM pedidos 
 
     <!-- AGREGAR NUEVO PRODUCTO -->
     <div class="admin-card">
-      <div class="admin-title">➕ Agregar Nuevo Platillo al Catálogo</div>
-      <form method="POST" action="admin.php">
+      <div class="admin-title"> Agregar Nuevo Platillo al Catálogo</div>
+      <form method="POST" action="admin.php" enctype="multipart/form-data">
         <input type="hidden" name="accion" value="crear_producto">
         <div class="form-grid">
           <div>
@@ -164,13 +186,17 @@ $pedidos = $conn->query("SELECT p.*, u.nombre as cliente, u.correo FROM pedidos 
           <label>Descripción</label>
           <input type="text" name="descripcion" placeholder="Breve descripción del plato típico...">
         </div>
-        <button type="submit" style="width: auto; padding: 12px 28px;">Guardar Platillo 💾</button>
+        <div style="margin-bottom:16px;">
+          <label>Imagen del platillo</label>
+          <input type="file" name="imagen" accept="image/*">
+        </div>
+        <button type="submit" style="width: auto; padding: 12px 28px;">Guardar Platillo </button>
       </form>
     </div>
 
     <!-- TABLA DE PRODUCTOS -->
     <div class="admin-card">
-      <div class="admin-title">🍲 Platillos en la Base de Datos (`productos`)</div>
+      <div class="admin-title"> Platillos en la Base de Datos (`productos`)</div>
       <table class="admin-table">
         <thead>
           <tr>
@@ -180,6 +206,7 @@ $pedidos = $conn->query("SELECT p.*, u.nombre as cliente, u.correo FROM pedidos 
             <th>Precio</th>
             <th>Rating</th>
             <th>Stock</th>
+            <th>Imagen</th>
             <th>Fecha Creación</th>
           </tr>
         </thead>
@@ -193,6 +220,13 @@ $pedidos = $conn->query("SELECT p.*, u.nombre as cliente, u.correo FROM pedidos 
                 <td>$<?php echo number_format($prod['precio'], 2); ?></td>
                 <td>⭐ <?php echo $prod['rating']; ?></td>
                 <td><?php echo $prod['stock']; ?> uds.</td>
+                <td>
+                  <?php if (!empty($prod['imagen'])): ?>
+                    <img src="<?php echo htmlspecialchars($prod['imagen']); ?>" alt="Imagen de <?php echo htmlspecialchars($prod['nombre']); ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                  <?php else: ?>
+                    <span style="color:#999;">Sin imagen</span>
+                  <?php endif; ?>
+                </td>
                 <td><?php echo $prod['fecha_creacion']; ?></td>
               </tr>
             <?php endwhile; ?>
@@ -205,7 +239,7 @@ $pedidos = $conn->query("SELECT p.*, u.nombre as cliente, u.correo FROM pedidos 
 
     <!-- TABLA DE USUARIOS -->
     <div class="admin-card">
-      <div class="admin-title">👥 Usuarios Registrados (`usuarios`)</div>
+      <div class="admin-title"> Usuarios Registrados (`usuarios`)</div>
       <table class="admin-table">
         <thead>
           <tr>

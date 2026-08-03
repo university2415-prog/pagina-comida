@@ -1,6 +1,11 @@
 <?php
 require_once 'conexion.php';
 
+$checkCol = $conn->query("SHOW COLUMNS FROM productos LIKE 'imagen'");
+if ($checkCol && $checkCol->num_rows === 0) {
+    $conn->query("ALTER TABLE productos ADD COLUMN imagen VARCHAR(255) NULL DEFAULT NULL");
+}
+
 $res = $conn->query("SELECT * FROM productos ORDER BY id ASC");
 
 if ($res && $res->num_rows === 0) {
