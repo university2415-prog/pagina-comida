@@ -1,65 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Comidas Típicas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="login-page">
-      <div class="login-card">
-        <div class="login-brand">
-          <div class="brand-icon">
-            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="30" cy="22" r="8" fill="white"/>
-              <path d="M 18 28 L 22 35 L 38 35 L 42 28 Z" fill="white"/>
-              <rect x="16" y="35" width="28" height="3" fill="white"/>
-            </svg>
-          </div>
-          <h1>Comidas Típicas de todo el mundo</h1>
-          <p>Sabores unicos de tu pais</p>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Comidas Típicas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-icon">
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="22" r="8" fill="white" />
+            <path d="M 18 28 L 22 35 L 38 35 L 42 28 Z" fill="white" />
+            <rect x="16" y="35" width="28" height="3" fill="white" />
+          </svg>
+        </div>
+        <h1>Comidas Típicas de todo el mundo</h1>
+        <p>Sabores unicos de tu pais</p>
+      </div>
+
+      <form class="login-form" onsubmit="irAlMenu(event)">
+        <label for="user">Usuario o Correo</label>
+        <input id="user" type="text" placeholder="gourmet_viajero" />
+
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" placeholder="••••••••" />
+
+        <div class="options-row">
+          <label class="checkbox">
+            <input type="checkbox" />
+            <span>Recordarme</span>
+          </label>
+          <a href="#">¿Olvidaste tu contraseña?</a>
         </div>
 
-        <form class="login-form" onsubmit="irAlMenu(event)">
-          <label for="user">Usuario o Correo</label>
-          <input id="user" type="text" placeholder="gourmet_viajero" />
+        <button type="submit">Explorar el Menú 🍽️</button>
+      </form>
 
-          <label for="password">Contraseña</label>
-          <input id="password" type="password" placeholder="••••••••" />
-
-          <div class="options-row">
-            <label class="checkbox">
-              <input type="checkbox" />
-              <span>Recordarme</span>
-            </label>
-            <a href="#">¿Olvidaste tu contraseña?</a>
-          </div>
-
-          <button type="submit">Explorar el Menú 🍽️</button>
-        </form>
-
-        <p class="signup-text">
-          ¿No tienes cuenta?
-          <a href="menu.html">Regístrate aquí</a>
-        </p>
-      </div>
+      <p class="signup-text">
+        ¿No tienes cuenta?
+        <a href="formulario_registro.html">Regístrate aquí</a>
+      </p>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-client.js"></script>
-    <script>
-      async function irAlMenu(event) {
-        event.preventDefault();
-        const usuario = document.getElementById('user').value.trim();
-        if (usuario) {
-          await guardarIntentoLogin(usuario);
+  <script>
+    async function irAlMenu(event) {
+      event.preventDefault();
+      const userVal = document.getElementById('user').value.trim();
+      const passVal = document.getElementById('password').value.trim();
+
+      if (!userVal || !passVal) {
+        // Permite explorar directo
+        window.location.href = 'menu.html';
+        return;
+      }
+
+      try {
+        const response = await fetch('login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user: userVal, password: passVal })
+        });
+        const res = await response.json();
+
+        if (res.success) {
+          alert('¡Bienvenido ' + res.usuario.nombre + '!');
+          window.location.href = 'menu.html';
+        } else {
+          alert(res.message || 'Usuario o contraseña incorrectos');
         }
+      } catch (err) {
+        console.error(err);
         window.location.href = 'menu.html';
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>
