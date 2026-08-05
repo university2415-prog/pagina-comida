@@ -25,4 +25,23 @@ if ($conn->connect_error) {
 }
 
 $conn->set_charset("utf8mb4");
+
+$createContactosTable = "
+CREATE TABLE IF NOT EXISTS contactos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    primer_apellido VARCHAR(255) DEFAULT NULL,
+    segundo_apellido VARCHAR(255) DEFAULT NULL,
+    correo VARCHAR(255) NOT NULL,
+    contraseña VARCHAR(255) DEFAULT NULL,
+    pais VARCHAR(100) DEFAULT NULL,
+    mensaje TEXT DEFAULT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+";
+
+if (!$conn->query($createContactosTable)) {
+    error_log("Error creando tabla contactos: " . $conn->error);
+}
+
 ?>

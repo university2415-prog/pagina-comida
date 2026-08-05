@@ -3,6 +3,10 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header("Content-Type: application/json; charset=UTF-8");
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'conexion.php';
 
 $raw = file_get_contents('php://input');
@@ -53,7 +57,32 @@ $stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_a
 $stmt->bind_param('ssssss', $nombre, $primer_apellido, $segundo_apellido, $correo, $hash, $pais);
 
 if ($stmt->execute()) {
-    $_SESSION['usuario_id'] = $stmt->insert_id;
+    $usuarioId = $stmt->insert_id;
+    $stmt->close();
+
+    $stmtContacto = $conn->prepare("INSERT INTO contactos (nombre, primer_apellido, segundo_apellido, correo, contraseña, pais) VALUES (?, ?, ?, ?, ?, ?)");
+    if ($stmtContacto) {
+        $stmtContacto->bind_param('ssssss', $nombre, $primer_apellido, $segundo_apellido, $correo, $hash, $pais);
+        if (!$stmtContacto->execute()) {
+            $stmtContacto->close();
+            $conn->query("DELETE FROM usuarios WHERE id = $usuarioId");
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al guardar el registro en la tabla contactos.'
+            ]);
+            exit();
+        }
+        $stmtContacto->close();
+    } else {
+        $conn->query("DELETE FROM usuarios WHERE id = $usuarioId");
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error preparando la tabla contactos.'
+        ]);
+        exit();
+    }
+
+    $_SESSION['usuario_id'] = $usuarioId;
     $_SESSION['usuario_nombre'] = $nombre;
     $_SESSION['usuario_correo'] = $correo;
 

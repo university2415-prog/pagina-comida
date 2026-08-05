@@ -132,8 +132,7 @@ if ($res) {
       <nav class="top-nav" style="margin: 0;">
         <a href="menu.html">Menú</a>
         <a href="pedidos.php" class="active">Mis Pedidos</a>
-        <a href="recetas.html">Recetas</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="contacto.php">Contacto</a>
         <a href="admin.php">Administración</a>
       </nav>
 

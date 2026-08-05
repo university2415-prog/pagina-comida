@@ -1,3 +1,16 @@
+<?php
+$status = $_GET['status'] ?? '';
+$message = '';
+$messageClass = '';
+
+if ($status === 'success') {
+    $message = 'Mensaje enviado correctamente. Gracias por contactarnos.';
+    $messageClass = 'success-message';
+} elseif ($status === 'error') {
+    $message = 'Ocurrió un error al enviar tu mensaje. Intenta de nuevo.';
+    $messageClass = 'error-message';
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -32,7 +45,11 @@
 
         <article class="card">
           <form method="POST" action="guardar_contacto.php">
-            <div id="formMessage" style="margin-bottom: 18px; padding: 12px; border-radius: 10px; display: none;"></div>
+            <?php if ($message): ?>
+              <div class="form-alert <?= htmlspecialchars($messageClass, ENT_QUOTES, 'UTF-8') ?>">
+                <?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?>
+              </div>
+            <?php endif; ?>
 
             <label for="name">Nombre</label>
             <input id="name" name="nombre" type="text" required placeholder="Tu nombre" />
