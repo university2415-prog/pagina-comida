@@ -1,12 +1,12 @@
 :root {
-  color-scheme: light;
-  --bg: #fff8ed;
-  --card: #ffffff;
-  --accent: #d97706;
-  --accent-dark: #9a2c00;
-  --text: #2f241d;
-  --muted: #7b6756;
-  --border: #f2dfc5;
+  color-scheme: dark;
+  --bg: #060816;
+  --card: #111827;
+  --accent: #f59e0b;
+  --accent-dark: #fb923c;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --border: #2c3a4f;
 }
 
 * {
@@ -17,7 +17,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Inter", sans-serif;
-  background: linear-gradient(135deg, #fff6e6 0%, #ffe8bf 100%);
+  background: radial-gradient(circle at top, rgba(245, 158, 11, 0.14), transparent 30%), linear-gradient(135deg, #060816 0%, #0f172a 100%);
   color: var(--text);
 }
 
@@ -27,16 +27,16 @@ body {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: radial-gradient(circle at top, rgba(217, 119, 6, 0.16), transparent 35%), linear-gradient(135deg, #fff6e6 0%, #ffe8bf 100%);
+  background: radial-gradient(circle at top, rgba(245, 158, 11, 0.16), transparent 35%), linear-gradient(135deg, #060816 0%, #0f172a 100%);
 }
 
 .login-card {
   width: min(100%, 480px);
   padding: 40px;
   border-radius: 28px;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 20px 50px rgba(120, 64, 10, 0.15);
-  border: 1px solid rgba(242, 223, 197, 0.8);
+  background: rgba(17, 24, 39, 0.95);
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.45);
+  border: 1px solid rgba(44, 58, 79, 0.95);
 }
 
 .login-brand {
@@ -91,7 +91,8 @@ input[type="password"] {
   border: 2px solid var(--border);
   border-radius: 10px;
   font-size: 0.98rem;
-  background: #fffdf8;
+  background: #0f172a;
+  color: var(--text);
   outline: none;
   font-family: inherit;
   transition: border-color 200ms ease;
@@ -152,16 +153,17 @@ button:hover {
 
 /* CATALOG PAGE STYLES */
 .catalog-page {
-  background: #faf8f5;
+  background: var(--bg);
 }
 
 .navbar {
-  background: white;
-  border-bottom: 1px solid #e5e0d8;
+  background: rgba(7, 12, 24, 0.95);
+  border-bottom: 1px solid var(--border);
   padding: 12px 24px;
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(12px);
 }
 
 .navbar-content {
@@ -214,9 +216,9 @@ button:hover {
   padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fffdf8;
+  background: #0f172a;
   font-size: 0.95rem;
-  color: var(--muted);
+  color: var(--text);
   outline: none;
 }
 
@@ -258,13 +260,13 @@ button:hover {
 }
 
 .hero {
-  background: linear-gradient(135deg, #c9361d 0%, #d97706 100%);
+  background: linear-gradient(135deg, #111827 0%, #0f172a 100%);
   background-image:
-  linear-gradient(45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(0, 0, 0, 0.05) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.05) 75%),
-    linear-gradient(135deg, #c9361d 0%, #d97706 100%);
+  linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    linear-gradient(135deg, #111827 0%, #0f172a 100%);
   background-size: 40px 40px;
   background-position: 0 0, 20px 0, 20px -20px, 0px -20px, 0 0;
   padding: 60px 24px;
@@ -321,16 +323,17 @@ button:hover {
 }
 
 .dish-card {
-  background: white;
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
+  border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35);
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
 .dish-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.45);
 }
 
 .dish-image {
@@ -438,11 +441,11 @@ button:hover {
 }
 
 .card {
-  background: var(--card);
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 24px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.25);
 }
 
 .card .emoji {
@@ -474,7 +477,8 @@ textarea {
   border: 2px solid var(--border);
   border-radius: 10px;
   font-size: 0.98rem;
-  background: #fffdf8;
+  background: #0f172a;
+  color: var(--text);
   outline: none;
   font-family: inherit;
   resize: vertical;
@@ -561,10 +565,11 @@ textarea:focus {
 
 /* FOOTER STYLES */
 .footer {
-  background: #3d2217;
+  background: #020617;
   color: white;
   padding: 40px 24px;
   margin-top: 60px;
+  border-top: 1px solid var(--border);
 }
 
 .footer-content {
@@ -657,8 +662,8 @@ textarea:focus {
 }
 
 .empty-cart {
-  background: white;
-  border: 2px dashed var(--border);
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 60px 40px;
   text-align: center;
@@ -803,7 +808,7 @@ textarea:focus {
 }
 
 .cart-item {
-  background: white;
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
@@ -918,11 +923,11 @@ textarea:focus {
 }
 
 .summary-card {
-  background: white;
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
 }
 
 .summary-card h2 {
@@ -991,11 +996,11 @@ textarea:focus {
 
 /* EMPTY CART */
 .empty-cart {
-  background: white;
+  background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
   border-radius: 16px;
   padding: 60px 40px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
 }
 
 .empty-cart-content {
