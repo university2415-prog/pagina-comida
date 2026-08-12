@@ -1,0 +1,13 @@
+[33mcommit bec154f1a259ad9911b7cffde487caa8460c561a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31mpaginaproyecto/main[m[33m)[m
+Author: Copilot <copilot@example.com>
+Date:   Tue Aug 11 19:26:47 2026 -0600
+
+    g
+
+ README_DEPLOY.md     | 40 [32m+++++++++++++++++++++++++++[m
+ check_and_deploy.ps1 | 78 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ conexion.php         | 43 [32m++++++++++++++++++++++++++[m[31m---[m
+ push_all.ps1         | 59 [32m+++++++++++++++++++++++++++++++++++++++[m
+ registro.php         |  6 [32m++[m[31m--[m
+ test_connection.php  | 38 [32m+++++++++++++++++++++++++[m
+ 6 files changed, 258 insertions(+), 6 deletions(-)
