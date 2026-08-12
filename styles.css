@@ -4,7 +4,7 @@
   --card: #111827;
   --accent: #f59e0b;
   --accent-dark: #fb923c;
-  --text: #f8fafc;
+  --text: #b96f0d;
   --muted: #94a3b8;
   --border: #2c3a4f;
 }
@@ -157,7 +157,7 @@ button:hover {
 }
 
 .navbar {
-  background: rgba(7, 12, 24, 0.95);
+  background: rgba(46, 48, 54, 0.95);
   border-bottom: 1px solid var(--border);
   padding: 12px 24px;
   position: sticky;
@@ -709,7 +709,7 @@ textarea:focus {
 .btn-explore {
   display: inline-block;
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: white;
+  color: rgb(180, 42, 42);
   padding: 14px 32px;
   border-radius: 8px;
   text-decoration: none;
@@ -760,7 +760,7 @@ textarea:focus {
 
 .btn-add-cart {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: white;
+  color: rgb(100, 17, 17);
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -827,7 +827,7 @@ textarea:focus {
 .item-image {
   width: 100px;
   height: 100px;
-  background: linear-gradient(135deg, #e8f0f7 0%, #f5e6d3 100%);
+  background: linear-gradient(135deg, #0e1c29 0%, #83500e 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -952,7 +952,7 @@ textarea:focus {
   color: var(--text);
   margin-bottom: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #f0ede8;
+  border-bottom: 1px solid #614109;
 }
 
 .summary-row.total {
@@ -976,7 +976,7 @@ textarea:focus {
 .btn-checkout {
   width: 100%;
   background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: white;
+  color: rgb(78, 12, 12);
   border: none;
   padding: 14px 24px;
   border-radius: 8px;
