@@ -9,6 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once 'conexion.php';
 
+// producción: no mostrar errores en pantalla aquí
+
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true);
 
@@ -53,14 +55,14 @@ if ($result && $result->num_rows > 0) {
 }
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
-$stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, correo, contraseña, pais, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+$stmt = $conn->prepare("INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, correo, `contraseña`, pais, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, NOW())");
 $stmt->bind_param('ssssss', $nombre, $primer_apellido, $segundo_apellido, $correo, $hash, $pais);
 
 if ($stmt->execute()) {
     $usuarioId = $stmt->insert_id;
     $stmt->close();
 
-    $stmtContacto = $conn->prepare("INSERT INTO contactos (nombre, primer_apellido, segundo_apellido, correo, contraseña, pais) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmtContacto = $conn->prepare("INSERT INTO contactos (nombre, primer_apellido, segundo_apellido, correo, `contraseña`, pais) VALUES (?, ?, ?, ?, ?, ?)");
     if ($stmtContacto) {
         $stmtContacto->bind_param('ssssss', $nombre, $primer_apellido, $segundo_apellido, $correo, $hash, $pais);
         if (!$stmtContacto->execute()) {
